@@ -5,8 +5,8 @@
 
 // ── CONFIG ────────────────────────────────────────────────
 const G        = 10;          // grid size (larger)
-const MOVES    = 25;          // fewer moves
-const TARGET   = 3000;         // much higher target
+const MOVES    = 20;          // hiper complicado (menos turnos)
+const TARGET   = 3500;        // meta más alta
 const MIN_RUN  = 3;
 
 const TYPES = [
@@ -19,7 +19,7 @@ const TYPES = [
   { emoji:'🍑', cls:'c6' },
 ];
 
-const COMBOS = ['¡Amor!','¡Dulce!','¡Corazón!','¡Mágico!','¡Divino!','¡Perfecto!','¡Increíble!'];
+const COMBOS = ['¡Preciosa!','¡Me Encantas!','¡Mi Vida!','¡Perfecta!','¡Te Amo!','¡Almas Gemelas!','¡Infinito Amor!'];
 const SPARKS = ['💕','✨','🌟','💖','⭐','🌸','💗','🎀'];
 const SAD_FX = ['💔', '🥀', '🖤', '🍂'];
 
@@ -347,7 +347,7 @@ async function cascade() {
   while (ms.length) {
     combo++;
     burst(ms);
-    const score = ms.length * 20 * combo;
+    const score = ms.length * 15 * combo;
     addPts(score, ms);
     if (combo > 1) showCombo(combo);
     await wait(400);
@@ -566,6 +566,8 @@ function initWin3D() {
   const firefly = buildFireflies(scene);
   const ribbons = buildRibbons(scene);
   const tunnel  = buildLoveTunnel(scene);
+  const fireworks = buildFireworks(scene);
+  const shockwaves = buildShockwaves(scene);
 
   // Messages overlay
   const msgs = buildWinMessages();
@@ -581,7 +583,7 @@ function initWin3D() {
   window.addEventListener('resize', onResize);
 
   W3 = { renderer, scene, camera, raf:null, t:0, onResize,
-         hearts, helix, petals, rings, firefly, ribbons, pinkL, goldL, violetL,
+         hearts, helix, petals, rings, firefly, ribbons, fireworks, shockwaves, pinkL, goldL, violetL,
          tunnel, msgs,
          camPhase, camStartZ:55, camTargetZ:28 };
 
@@ -682,7 +684,66 @@ function tickWin3D(ts) {
     m.style.transform = `translate(-50%, -50%) scale(${1 + Math.sin(t*3)*0.1})`;
   });
 
+  // ── Fireworks ──
+  W3.fireworks.forEach(f => {
+    if (f.userData.life > 0) {
+      f.userData.life -= dt * 0.45;
+      f.position.x += f.userData.vx * dt;
+      f.position.y += f.userData.vy * dt;
+      f.position.z += f.userData.vz * dt;
+      f.userData.vy -= 8 * dt; // gravity
+      f.userData.vx *= 0.96; f.userData.vy *= 0.96; f.userData.vz *= 0.96;
+      f.material.opacity = f.userData.life;
+      f.scale.setScalar(f.userData.life);
+    }
+  });
+
+  // ── Shockwaves ──
+  W3.shockwaves.forEach(m => {
+    m.userData.phase += dt * 0.35;
+    const p = m.userData.phase % 1; 
+    m.scale.setScalar(0.1 + p * 35);
+    m.material.opacity = (1 - p) * 0.6;
+    m.rotation.z = p * Math.PI * 0.25;
+  });
+
   W3.renderer.render(W3.scene, W3.camera);
+}
+
+function buildFireworks(scene) {
+  const meshes = [];
+  const geom = new THREE.SphereGeometry(0.3, 8, 8);
+  for(let i=0; i<300; i++) {
+    const isGold = Math.random() > 0.4;
+    const color = isGold ? 0xffea00 : 0xff1166;
+    const mat = new THREE.MeshBasicMaterial({ color: color, transparent: true, blending: THREE.AdditiveBlending });
+    const m = new THREE.Mesh(geom, mat);
+    const speed = 25 + Math.random() * 40;
+    const theta = Math.random() * 2 * Math.PI;
+    const phi = Math.acos((Math.random() * 2) - 1);
+    m.position.set(0,0,0);
+    m.userData = {
+      vx: Math.sin(phi) * Math.cos(theta) * speed,
+      vy: Math.sin(phi) * Math.sin(theta) * speed,
+      vz: Math.cos(phi) * speed,
+      life: 1.0 + Math.random() * 0.5
+    };
+    scene.add(m); meshes.push(m);
+  }
+  return meshes;
+}
+
+function buildShockwaves(scene) {
+  const meshes = [];
+  const geom = new THREE.ExtrudeGeometry(heartShape3D(1), { depth:0.01, bevelEnabled:true, bevelSegments:2, bevelSize:0.05, bevelThickness:0.05 });
+  geom.center();
+  for (let i=0; i<3; i++) {
+    const mat = new THREE.MeshBasicMaterial({ color: 0xff3388, transparent:true, blending:THREE.AdditiveBlending, opacity:0 });
+    const m = new THREE.Mesh(geom, mat);
+    m.userData = { phase: i * 0.33 };
+    scene.add(m); meshes.push(m);
+  }
+  return meshes;
 }
 
 function buildLoveTunnel(scene) {
@@ -700,7 +761,7 @@ function buildLoveTunnel(scene) {
 
 function buildWinMessages() {
   const container = document.getElementById('win-ui');
-  const texts = ["Eres mi Todo", "Amor Eterno", "Dulce Corazón", "Para Siempre"];
+  const texts = ["Tú eres mi Destino", "Daría mil vidas por ti", "Mi Razón de Existir", "Juntos a la Eternidad", "Te Amo Infinitamente"];
   return texts.map(txt => {
     const div = document.createElement('div');
     div.textContent = txt;
