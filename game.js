@@ -39,6 +39,7 @@ const winEl    = document.getElementById('win');
 const goEl     = document.getElementById('gameover');
 const winNumEl = document.getElementById('win-score-num');
 const goPtsEl  = document.getElementById('go-pts');
+const targetLblEl = document.getElementById('target-lbl');
 
 // ── BOOT ─────────────────────────────────────────────────
 window.addEventListener('DOMContentLoaded', () => {
@@ -78,6 +79,7 @@ function newGame() {
 function resetUI() {
   scoreEl.textContent = 0; movesEl.textContent = MOVES;
   progEl.style.width = '0%'; comboEl.textContent = '';
+  if (targetLblEl) targetLblEl.textContent = TARGET;
 }
 
 // ── RANDOM ────────────────────────────────────────────────
@@ -345,7 +347,7 @@ async function cascade() {
   while (ms.length) {
     combo++;
     burst(ms);
-    const score = ms.length * 10 * combo;
+    const score = ms.length * 20 * combo;
     addPts(score, ms);
     if (combo > 1) showCombo(combo);
     await wait(400);
