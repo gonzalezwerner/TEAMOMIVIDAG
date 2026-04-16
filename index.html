@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <title>💕 Candy Crush Romántico</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Dancing+Script:wght@700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Ambient layers -->
+  <div id="bg-nebula"></div>
+  <div id="bg-hearts"></div>
+
+  <!-- Game UI -->
+  <div id="app">
+
+    <!-- Header -->
+    <header id="hdr">
+      <div class="hdr-glass"></div>
+      <div class="hdr-row">
+        <div class="stat-box" id="stat-score">
+          <span class="stat-label">💖 Puntos</span>
+          <span class="stat-val" id="score-val">0</span>
+        </div>
+        <div class="brand">
+          <div class="brand-title">Candy Crush</div>
+          <div class="brand-sub">✨ Romántico ✨</div>
+        </div>
+        <div class="stat-box" id="stat-moves">
+          <span class="stat-label">🌹 Turnos</span>
+          <span class="stat-val" id="moves-val">30</span>
+        </div>
+      </div>
+      <div class="prog-row">
+        <span class="prog-label">Meta <span id="target-lbl">500</span>pts</span>
+        <div class="prog-track">
+          <div id="prog-fill" class="prog-fill"></div>
+          <div class="prog-glow"></div>
+        </div>
+        <span class="prog-heart">💕</span>
+      </div>
+    </header>
+
+    <!-- Board -->
+    <main id="main">
+      <div id="board-wrap">
+        <div id="board-shine-tl"></div>
+        <div id="board-shine-br"></div>
+        <div id="board"></div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer id="ftr">
+      <button class="btn btn-rose" id="btn-new">🌹 Nuevo</button>
+      <div id="combo-msg"></div>
+      <button class="btn btn-violet" id="btn-hint">💡 Pista</button>
+    </footer>
+
+  </div>
+
+  <!-- Particles layer -->
+  <div id="fx"></div>
+
+  <!-- WIN OVERLAY -->
+  <div id="win" class="overlay hidden">
+    <canvas id="win-canvas"></canvas>
+    <div id="win-ui">
+      <div id="win-orbit"></div>
+      <h2 id="win-title">¡Lo Lograste!</h2>
+      <p  id="win-sub">Tan dulce como el amor verdadero...</p>
+      <div id="win-score-box">
+        <div class="ws-lbl">Tu amor vale</div>
+        <div id="win-score-num">0</div>
+        <div class="ws-lbl">puntos de corazón 💕</div>
+      </div>
+      <button class="btn btn-win" id="btn-again">💖 Jugar de Nuevo</button>
+    </div>
+  </div>
+
+  <!-- GAME OVER -->
+  <div id="gameover" class="overlay hidden">
+    <div id="go-card">
+      <div class="go-ico">💔</div>
+      <h2 class="go-title">Casi...</h2>
+      <p class="go-sub">El amor siempre da otra oportunidad</p>
+      <p class="go-pts">Puntos: <strong id="go-pts">0</strong></p>
+      <button class="btn btn-rose" id="btn-retry">🌹 Intentar de Nuevo</button>
+    </div>
+  </div>
+
+  <script src="three.min.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
