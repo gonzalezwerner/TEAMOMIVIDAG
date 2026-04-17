@@ -445,7 +445,10 @@ body {
 
 /* WIN */
 #win { background: transparent; }
-#win-canvas { position:absolute; inset:0; width:100%; height:100%; }
+#win-canvas { 
+  position:absolute; inset:0; width:100%; height:100%;
+  filter: drop-shadow(0 0 15px rgba(255,40,100,0.8)) drop-shadow(0 0 35px rgba(255,20,80,0.6));
+}
 #win-ui {
   position: relative; z-index: 10;
   display: flex; flex-direction:column; align-items:center; gap:18px;
