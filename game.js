@@ -5,8 +5,8 @@
 
 // ── CONFIG ────────────────────────────────────────────────
 const G        = 10;          // grid size (larger)
-const MOVES    = 20;          // hiper complicado (menos turnos)
-const TARGET   = 3500;        // meta más alta
+const MOVES    = 20;          // hiper complicado (margen de error casi nulo)
+const TARGET   = 3000;        // meta extremadamente alta para 20 turnos
 const MIN_RUN  = 3;
 
 const TYPES = [
